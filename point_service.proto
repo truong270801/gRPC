@@ -1,0 +1,30 @@
+syntax = "proto3";
+
+package pointservice;
+
+service PointService {
+    rpc AddPoints(PointRequest) returns (PointResponse);
+    rpc SubtractPoints(PointRequest) returns (PointResponse);
+    rpc GetUsers(Empty) returns (UserList);
+}
+
+message PointRequest {
+    string user_id = 1;
+    int32 points = 2;
+}
+
+message PointResponse {
+    string user_id = 1;
+    int32 total_points = 2;
+}
+
+message User {
+    string user_id = 1;
+    int32 total_points = 2;
+}
+
+message UserList {
+    repeated User users = 1;
+}
+
+message Empty {}
