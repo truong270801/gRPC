@@ -7,9 +7,12 @@ proto_path = os.path.abspath(os.path.join(os.path.dirname(__file__), '../protobu
 sys.path.insert(0, proto_path)
 from point_service_pb2 import PointRequest, Empty
 import point_service_pb2_grpc
+from dotenv import load_dotenv
+import os
 
-# Set up gRPC channel and stub
-channel = grpc.insecure_channel('localhost:50051')
+load_dotenv()
+
+channel = grpc.insecure_channel(os.getenv("HOST_SERVER"))
 stub = point_service_pb2_grpc.PointServiceStub(channel)
 
 def add_points():
@@ -46,14 +49,14 @@ root.title("Point Management")
 frame = tk.Frame(root, padx=20, pady=20)
 frame.pack(side=tk.LEFT, padx=10)
 
-label_add = tk.Label(frame, text="Add Points", font=("Helvetica", 16))
+label_add = tk.Label(frame, text="Point Management", font=("Helvetica", 16))
 label_add.grid(row=0, column=0, columnspan=2, pady=10)
 
 tk.Label(frame, text="User ID").grid(row=1, column=0, sticky='w')
 userIdAdd = tk.Entry(frame)
 userIdAdd.grid(row=1, column=1)
 
-tk.Label(frame, text="Points to Add").grid(row=2, column=0, sticky='w')
+tk.Label(frame, text="Points").grid(row=2, column=0, sticky='w')
 pointsToAdd = tk.Entry(frame)
 pointsToAdd.grid(row=2, column=1)
 
