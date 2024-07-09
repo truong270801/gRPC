@@ -3,40 +3,40 @@ from tkinter import messagebox
 import grpc
 import sys
 import os
-proto_path = os.path.abspath(os.path.join(os.path.dirname(__file__), '../protobuf'))
+proto_path = os.path.abspath(os.path.join(os.path.dirname(__file__), './proto'))
 sys.path.insert(0, proto_path)
-from point_service_pb2 import PointRequest, Empty
-import point_service_pb2_grpc
+from pointstudent_pb2 import PointRequest, Empty
+from pointstudent_pb2_grpc import StudetnPointStub
 from dotenv import load_dotenv
 import os
 
 load_dotenv()
 
 channel = grpc.insecure_channel(os.getenv("HOST_SERVER"))
-stub = point_service_pb2_grpc.PointServiceStub(channel)
+stub = StudetnPointStub(channel)
 
 def add_points():
-    user_id = userIdAdd.get()
+    user_id = int(userIdAdd.get())
     points = int(pointsToAdd.get())
     try:
-        response = stub.AddPoints(PointRequest(user_id=user_id, points=points))
-        messagebox.showinfo("Success", f"Added {points} points to User {response.user_id}. Total Points: {response.total_points}")
+        response = stub.AddPoints(PointRequest(id=user_id, point=points))
+        messagebox.showinfo("Success",f'AddPoints Response: ID={response.id}, Point={response.point}, Message={response.message}')
     except Exception as e:
         messagebox.showerror("Error", f"Failed to add points: {str(e)}")
 
 def subtract_points():
-    user_id = userIdAdd.get()
+    user_id = int(userIdAdd.get())
     points = int(pointsToAdd.get())
     try:
-        response = stub.SubtractPoints(PointRequest(user_id=user_id, points=points))
-        messagebox.showinfo("Success", f"Subtracted {points} points from User {response.user_id}. Total Points: {response.total_points}")
+        response = stub.SubtractPoints(PointRequest(id=user_id, point=points))
+        messagebox.showinfo("Success",f'SubtractPoints Response: ID={response.id}, Point={response.point}, Message={response.message}')
     except Exception as e:
         messagebox.showerror("Error", f"Failed to subtract points: {str(e)}")
 
 def get_users():
     try:
         response = stub.GetUsers(Empty())
-        user_list = "\n".join([f"User: {user.user_id}, Total Points: {user.total_points}" for user in response.users])
+        user_list = "\n".join([f"User: {student.id}, Total Points: {student.point}" for student in response.student])
         messagebox.showinfo("User List", user_list)
     except Exception as e:
         messagebox.showerror("Error", f"Failed to fetch user list: {str(e)}")
@@ -46,7 +46,7 @@ root = tk.Tk()
 root.title("Point Management")
 
 # Add Points Frame
-frame = tk.Frame(root, padx=20, pady=20)
+frame = tk.Frame(root, padx=40, pady=40)
 frame.pack(side=tk.LEFT, padx=10)
 
 label_add = tk.Label(frame, text="Point Management", font=("Helvetica", 16))
