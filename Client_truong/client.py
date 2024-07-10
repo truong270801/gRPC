@@ -43,7 +43,7 @@ def get_users():
 
 # GUI setup
 root = tk.Tk()
-root.title("Point Management")
+root.title("TRUONG")
 
 # Add Points Frame
 frame = tk.Frame(root, padx=20, pady=20)
