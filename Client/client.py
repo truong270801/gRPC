@@ -12,7 +12,7 @@ import os
 
 load_dotenv()
 
-channel = grpc.insecure_channel(os.getenv("HOST_SERVER"))
+channel = grpc.insecure_channel('localhost:50051')
 stub = point_service_pb2_grpc.PointServiceStub(channel)
 
 def add_points():

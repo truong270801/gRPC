@@ -12,7 +12,7 @@ import os
 
 load_dotenv()
 
-channel = grpc.insecure_channel(os.getenv("HOST_SERVER"))
+channel = grpc.insecure_channel(os.getenv("HOST_SERVER_THIEN"))
 stub = StudetnPointStub(channel)
 
 def add_points():
